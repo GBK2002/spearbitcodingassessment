@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 space-y-2">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-semibold">{{ issue.title }}</h2>
+<span class="text-xs border rounded-full px-2 py-0.5 border-neutral-700">{{ issue.severity }}</span>
+</div>
+<p class="text-neutral-300">{{ issue.description }}</p>
+{% if issue.suggestedFix %}
+<div class="mt-2 text-sm text-neutral-400"><b>Suggestion:</b> {{ issue.suggestedFix }}</div>
+{% endif %}
+</div>
+
+
+<div class="mt-4 overflow-hidden rounded-2xl border border-neutral-800">
+<pre class="text-sm overflow-x-auto p-0 m-0 leading-6">
+{% set lines = file.content.split('\n') %}
+{% for l in lines %}
+{% set line_no = loop.index %}
+{% set active = (line_no >= issue.lineStart and line_no <= issue.lineEnd) %}
+<div class="{% if active %}bg-red-950/50{% endif %}"><span class="inline-block w-14 pr-2 text-right text-neutral-500 select-none">{{ line_no }}</span><span class="whitespace-pre-wrap">{{ l }}</span></div>
+{% endfor %}
+</pre>
+</div>
+{% endblock %}

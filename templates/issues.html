@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 space-y-2">
+<h2 class="text-xl font-semibold">Issues for Scan {{ scan_id }}</h2>
+<div class="text-sm text-neutral-300">Repo: {{ scan.repo.owner }}/{{ scan.repo.name }} @ {{ scan.repo.defaultBranch }}</div>
+</div>
+
+
+{% if scan.issues|length == 0 %}
+<div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 mt-4">No issues found.</div>
+{% else %}
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+{% for i in scan.issues %}
+<a href="/issues/{{ scan_id }}/{{ i.id }}" class="block bg-neutral-900 border border-neutral-800 rounded-2xl p-4 hover:bg-neutral-850">
+<div class="flex items-center justify-between">
+<h3 class="font-medium pr-2 truncate">{{ i.title }}</h3>
+<span class="text-xs border rounded-full px-2 py-0.5 border-neutral-700">{{ i.severity }}</span>
+</div>
+<div class="text-xs text-neutral-400 mt-1">{{ i.filePath }}:{{ i.lineStart }}-{{ i.lineEnd }}</div>
+<p class="text-sm text-neutral-300 mt-2">{{ i.description }}</p>
+</a>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}
